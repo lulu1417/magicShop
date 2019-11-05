@@ -16,20 +16,28 @@ class Magic extends Model
     {
         return $this->hasMany('Record');
     }
-
-    function getPrice()
+    function getID($id)
     {
-        return $this->price;
+        $ID = $this->where('id', $id)->first()->id;
+        return $ID;
     }
 
-    function getMagicName()
+    function getPrice($id)
     {
-        return $this->magic_name;
+        $price = $this->where('id', $id)->first()->price;
+        return $price;
     }
 
-    function getLevel()
+    function getMagicName($id)
     {
-        return $this->level;
+        $name = $this->where('id', $id)->first()->magic_name;
+        return $name;
+    }
+
+    function getLevel($id)
+    {
+        $level = $this->where('id', $id)->first()->level;
+        return $level;
     }
 
 }

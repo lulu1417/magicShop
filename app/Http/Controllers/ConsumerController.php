@@ -36,10 +36,11 @@ class ConsumerController extends BaseController
     {
 
         $consumer = Auth::user();
-
-        if ($magic = Magic::where('magic_name', $request->magic_name)->first() != null) {
-            $magic_id = Magic::where('magic_name', $request->magic_name)->first()->id;
-            $magic_price = Magic::where('magic_name', $request->magic_name)->first()->price;
+        $magic = new Magic;
+        $magic_id = $magic->getID($request['m_id']);
+        $magic_name = $magic->getMagicName($request['m_id']);
+        if ($magic_id != null) {
+            $magic_price = $magic->getPrice($magic_id);
             $consumer->money -= $magic_price;
             $consumer->update(['money' => $consumer->money]);
             $create = Record::create([
@@ -48,7 +49,7 @@ class ConsumerController extends BaseController
                 'amount' => $magic_price
             ]);
             $result = $create->toArray();
-            $message = "Magic $request->magic_name $$magic_price bought successfully.";
+            $message = "Magic $magic_name $$magic_price bought successfully.";
             if ($create)
                 return $this->sendResponse($result, $message);
         } else {
