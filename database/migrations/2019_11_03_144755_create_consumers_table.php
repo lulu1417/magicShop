@@ -14,7 +14,7 @@ class CreateConsumersTable extends Migration
     public function up()
     {
         Schema::create('consumers', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->bigIncrements('id')->primary();
             $table->string('name');
             $table->string('password');
             $table->string('api_token');

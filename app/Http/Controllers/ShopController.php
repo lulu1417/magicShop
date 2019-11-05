@@ -35,7 +35,7 @@ class ShopController extends BaseController
             }
 
         } catch (Exception $e) {
-            $this->sendError($e, 'Registered failed.', 500);
+            return $this->sendError($e->getMessage(),500);
         }
 
     }
@@ -88,7 +88,7 @@ class ShopController extends BaseController
                 }
             }
         } catch (Exception $e) {
-            sendError($e, 'Create failed.', 500);
+            return $this->sendError($e->getMessage(),500);
         }
     }
 
@@ -119,7 +119,7 @@ class ShopController extends BaseController
                 }
             }
         } catch(Exception $e) {
-        sendError($e, 'Update failed.', 500);
+            return $this->sendError($e->getMessage(),500);
     }
         }
 
@@ -138,7 +138,7 @@ class ShopController extends BaseController
                 return "Magic item $id delete successfully.";
             }
         } catch (Exception $e) {
-            sendError($e, ' failed.', 500);
+            return $this->sendError($e->getMessage(),500);
         }
     }
 }

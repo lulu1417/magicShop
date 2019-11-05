@@ -9,13 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 class ConsumptionRecord extends Model
 {
     protected $fillable = [
-      'consumer_id' , 'magic_id',
+      'consumer_id' , 'magic_id', 'amount'
     ];
 
-    public function consumer(){
-        return $this->belongsTo(Consumer::class);
+    function consumer(){
+        return $this->belongsTo(Consumer::class)->select(array('id', 'name','money'));
     }
-    public function magic(){
+    public function magics(){
         return $this->belongsTo(Magic::class);
     }
 

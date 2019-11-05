@@ -11,19 +11,25 @@ class Magic extends Model
     protected $fillable = [
         'magic_name', 'level', 'price'
     ];
+
     public function record()
     {
-        return $this->hasMany(Record::class);
+        return $this->hasMany('Record');
     }
 
-    function getPrice(){
-        //
+    function getPrice()
+    {
+        return $this->price;
     }
-    function getMagicName(){
-        //
+
+    function getMagicName()
+    {
+        return $this->magic_name;
     }
-    function getLevel(){
-        //
+
+    function getLevel()
+    {
+        return $this->level;
     }
 
 }
