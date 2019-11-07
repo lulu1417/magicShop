@@ -31,11 +31,11 @@ class ShopController extends BaseController
                 'api_token' => $token,
             ]);
             if ($create) {
-                return "Register as a shop owner, your Token is $token.";
+                return response()->json("Register as a shop owner, your Token is $token.");
             }
 
         } catch (Exception $e) {
-            return $this->sendError($e->getMessage(),500);
+            return $this->sendError($e->getMessage(), 500);
         }
 
     }
@@ -84,11 +84,11 @@ class ShopController extends BaseController
                 $result = $create->toArray();
                 $message = "Magic create successfully！";
                 if ($create) {
-                    return $this->sendResponse($result, $message );
+                    return $this->sendResponse($result, $message);
                 }
             }
         } catch (Exception $e) {
-            return $this->sendError($e->getMessage(),500);
+            return $this->sendError($e->getMessage(), 500);
         }
     }
 
@@ -100,12 +100,10 @@ class ShopController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
 
         $magic = Magic::where('id', $id);
-
         try {
             if (Auth::user()) {
                 $request->validate([
@@ -118,10 +116,10 @@ class ShopController extends BaseController
                     return $this->sendResponse($result, 'Magic updated successfully.');
                 }
             }
-        } catch(Exception $e) {
-            return $this->sendError($e->getMessage(),500);
-    }
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage(), 500);
         }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -132,13 +130,13 @@ class ShopController extends BaseController
     public
     function destroy($id)
     {
-        $magic = Magic::where('id', $id);
+        $magic = Magic::find($id);
         try {
             if ($magic->delete()) {
-                return "Magic item $id delete successfully.";
+                return response()->json("Magic item $id delete successfully.");
             }
         } catch (Exception $e) {
-            return $this->sendError($e->getMessage(),500);
+            return $this->sendError($e->getMessage(), 500);
         }
     }
 }

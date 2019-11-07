@@ -4,8 +4,15 @@
     <list default="true" id="6e0c92fe-0893-4556-be08-d35c1172f171" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Consumer.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Consumer.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/ConsumptionRecord.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/ConsumptionRecord.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ConsumerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ConsumerController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ShopController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ShopController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Magic.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Magic.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Owner.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Owner.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_03_144755_create_consumers_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_11_03_144755_create_consumers_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_03_160242_create_consumption_records_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_11_03_160242_create_consumption_records_table.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_05_034956_add_paid_to_consumption_records.php" beforeDir="false" afterPath="$PROJECT_DIR$/database/migrations/2019_11_07_032521_add_paid_to_consumption_records.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/database/migrations/2019_11_05_092546_add_paid_to_consumption_records.php" beforeDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -126,7 +133,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../pay" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
@@ -169,6 +176,11 @@
       <workItem from="1572878881502" duration="2102000" />
       <workItem from="1572881218928" duration="807000" />
       <workItem from="1572916863259" duration="21614000" />
+      <workItem from="1573009209046" duration="144000" />
+      <workItem from="1573022763972" duration="605000" />
+      <workItem from="1573030563270" duration="13000" />
+      <workItem from="1573032218790" duration="114000" />
+      <workItem from="1573094105603" duration="4339000" />
     </task>
     <servers />
   </component>

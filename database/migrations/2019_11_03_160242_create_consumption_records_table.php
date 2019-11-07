@@ -17,6 +17,9 @@ class CreateConsumptionRecordsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('consumer_id');
             $table->integer('magic_id');
+            $table->integer('amount');
+            $table->string('magic_name');
+            $table->string('level');
             $table->timestamps();
         });
     }

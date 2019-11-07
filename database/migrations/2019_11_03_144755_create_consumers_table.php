@@ -14,12 +14,11 @@ class CreateConsumersTable extends Migration
     public function up()
     {
         Schema::create('consumers', function (Blueprint $table) {
-            $table->bigIncrements('id')->primary();
+            $table->bigIncrements('id');
             $table->string('name');
             $table->string('password');
             $table->string('api_token');
             $table->integer('money');
-
             $table->timestamps();
         });
     }

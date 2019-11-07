@@ -10,11 +10,4 @@ class Owner extends Authenticatable
         'name','password', 'api_token',
     ];
 
-//    function getName(){
-//        //
-//    }
-//    function getToken(){
-//        //
-//    }
-
 }

@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class ConsumptionRecord extends Model
 {
     protected $fillable = [
-      'consumer_id' , 'magic_id', 'amount'
+      'consumer_id' , 'magic_id', 'amount', 'magic_name', 'level'
     ];
 
     function consumer(){

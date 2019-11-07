@@ -18,25 +18,25 @@ class Magic extends Model
     }
     function getID($id)
     {
-        $ID = $this->where('id', $id)->first()->id;
+        $ID = $this->find($id)->id;
         return $ID;
     }
 
     function getPrice($id)
     {
-        $price = $this->where('id', $id)->first()->price;
+        $price = $this->find($id)->price;
         return $price;
     }
 
     function getMagicName($id)
     {
-        $name = $this->where('id', $id)->first()->magic_name;
+        $name = $this->find($id)->magic_name;
         return $name;
     }
 
     function getLevel($id)
     {
-        $level = $this->where('id', $id)->first()->level;
+        $level = $this->find($id)->level;
         return $level;
     }
 

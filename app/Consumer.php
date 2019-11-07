@@ -23,13 +23,13 @@ class Consumer extends Authenticatable
 
     function getName($id)
     {
-        $name = $this->where('id', $id)->first()->name;
+        $name = $this->find($id)->name;
         return $name;
     }
 
     function getMoney($id)
     {
-        $money = $this->where('id', $id)->first()->money;
+        $money = $this->find($id)->money;
         return $money;
     }
 
