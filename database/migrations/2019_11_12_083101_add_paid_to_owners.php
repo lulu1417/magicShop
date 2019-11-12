@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateConsumersTable extends Migration
+class AddPaidToOwners extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,8 @@ class CreateConsumersTable extends Migration
      */
     public function up()
     {
-        Schema::create('consumers', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->string('password');
+        Schema::table('owners', function (Blueprint $table) {
             $table->string('api_token')->nullable();
-            $table->integer('money');
-            $table->timestamps();
         });
     }
 
@@ -30,6 +25,8 @@ class CreateConsumersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('consumers');
+        Schema::table('owners', function (Blueprint $table) {
+
+        });
     }
 }

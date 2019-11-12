@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Magic extends Model
 {
     protected $fillable = [
-        'magic_name', 'level', 'price'
+        'magic_name', 'level', 'price', 'photo'
     ];
 
     public function record()

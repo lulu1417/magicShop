@@ -81,17 +81,16 @@ class ConsumerController extends BaseController
         try {
             $request->validate([
                 'name' => ['required', 'string', 'unique:consumers'],
-                'password' => ['required', 'string', 'min:3', 'max:12'],
+                'password' => ['required', 'string', 'min:4', 'max:12'],
             ]);
-            $token = Str::random(10);
             $create = Consumer::create([
                 'name' => $request['name'],
                 'password' => $request['password'],
-                'api_token' => $token,
+                'api_token' => null,
                 'money' => 2000
             ]);
             if ($create) {
-                return response()->json("Register as a consumer, you got $2000, and your Token is $token.");
+                return response()->json("Register as a consumer.");
             }
         } catch (Exception $error) {
             return $this->sendError($error->getMessage(), 500);
@@ -105,7 +104,12 @@ class ConsumerController extends BaseController
         $token = Str::random(10);
         if ($consumer) {
             if ($consumer->update(['api_token' => $token])) { //update api_token
-                return response()->json("login as a consumer, your api token is $token");
+                $response = [
+                    'name' => $request->name,
+                    'password' => $request->password,
+                    'api_token' => $token,
+                ];
+                return response()->json($response);
             }
         } else return response()->json("Wrong email or password！");
     }
