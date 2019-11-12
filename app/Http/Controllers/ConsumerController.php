@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Consumer as Consumer;
 use App\ConsumptionRecord as Record;
 use App\Magic;
+use App\Owner;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Str;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -86,9 +88,10 @@ class ConsumerController extends BaseController
                 'name' => ['required', 'string', 'unique:consumers'],
                 'password' => ['required', 'string', 'min:4', 'max:12'],
             ]);
+            $hashedPassword = Hash::make($request['password']);
             $create = Consumer::create([
                 'name' => $request['name'],
-                'password' => $request['password'],
+                'password' => $hashedPassword,
                 'api_token' => null,
                 'money' => 2000
             ]);
@@ -104,17 +107,19 @@ class ConsumerController extends BaseController
     public function login(Request $request)
     {
         try {
-            $consumer = Consumer::where('name', $request->name)->where('password', $request->password)->first();
+            $consumer = new Consumer;
+            $hashedPassword = $consumer->getPassword($request['name']);
             $token = Str::random(10);
-            if ($consumer) {
-                if ($consumer->update(['api_token' => $token])) { //update api_token
-                    $response = [
-                        'name' => $request->name,
-                        'password' => $request->password,
-                        'api_token' => $token,
-                    ];
-                    return response()->json($response);
-                }
+            $consumer = $consumer->getConsumer($request['name']);
+            if (Hash::check($request['password'], $hashedPassword)) {
+                    if ($consumer->update(['api_token' => $token])) { //update api_token
+                        $response = [
+                            'name' => $request->name,
+                            'password' => $request->password,
+                            'api_token' => $token,
+                        ];
+                        return response()->json($response);
+                    }
             }
 
         } catch (Exception $e) {

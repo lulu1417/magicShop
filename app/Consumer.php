@@ -15,16 +15,26 @@ class Consumer extends Authenticatable
     protected $hidden = [
         'password', 'api_token'
     ];
-
-    public function records()
-    {
-        return $this->hasMany(Record::class);
-    }
-
     function getName($id)
     {
         $name = $this->find($id)->name;
         return $name;
+    }
+
+    function getPassword($name)
+    {
+        $password = $this->where('name', $name)->first()->password;
+        return $password;
+    }
+    function getConsumer($name)
+    {
+        $consumer = $this->where('name', $name)->first();
+        return $consumer;
+    }
+
+    public function records()
+    {
+        return $this->hasMany(Record::class);
     }
 
     function getMoney($id)
