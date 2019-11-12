@@ -22,14 +22,17 @@ class ConsumerController extends BaseController
                      where consumers.id = '2'
         ) as T on magics.id = T.magic_id; */
 
-        $response = Magic::leftjoin('consumption_records', function ($join) {
-            $join->on('magics.id', '=', 'consumption_records.magic_id')
-                ->where('consumer_id', '=', Auth::user()->id);
-        })->select('magics.id', 'magics.magic_name', 'magics.price', 'magics.level',
-            'consumption_records.magic_id', 'consumption_records.consumer_id', 'consumption_records.amount')
-            ->get();
-        return response()->json($response);
-
+        try {
+            $response = Magic::leftjoin('consumption_records', function ($join) {
+                $join->on('magics.id', '=', 'consumption_records.magic_id')
+                    ->where('consumer_id', '=', Auth::user()->id);
+            })->select('magics.id', 'magics.magic_name', 'magics.price', 'magics.level',
+                'consumption_records.magic_id', 'consumption_records.consumer_id', 'consumption_records.amount')
+                ->get();
+            return response()->json($response);
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage(), 500);
+        }
     }
 
 
@@ -44,7 +47,7 @@ class ConsumerController extends BaseController
             if ($magic_id != null) {
                 $magic_price = $magic->getPrice($magic_id);
                 $consumer->money -= $magic_price;
-                if($consumer->money > 0){
+                if ($consumer->money > 0) {
                     $create = Record::create([
                         'consumer_id' => $consumer['id'],
                         'magic_id' => $magic_id,
@@ -57,7 +60,7 @@ class ConsumerController extends BaseController
                     $message = "Magic $magic_name $$magic_price bought successfully.";
                     if ($create)
                         return $this->sendResponse($result, $message);
-                }else{
+                } else {
                     return response()->json("Your money is not enough.");
                 }
 
@@ -100,18 +103,24 @@ class ConsumerController extends BaseController
 
     public function login(Request $request)
     {
-        $consumer = Consumer::where('name', $request->name)->where('password', $request->password)->first();
-        $token = Str::random(10);
-        if ($consumer) {
-            if ($consumer->update(['api_token' => $token])) { //update api_token
-                $response = [
-                    'name' => $request->name,
-                    'password' => $request->password,
-                    'api_token' => $token,
-                ];
-                return response()->json($response);
+        try {
+            $consumer = Consumer::where('name', $request->name)->where('password', $request->password)->first();
+            $token = Str::random(10);
+            if ($consumer) {
+                if ($consumer->update(['api_token' => $token])) { //update api_token
+                    $response = [
+                        'name' => $request->name,
+                        'password' => $request->password,
+                        'api_token' => $token,
+                    ];
+                    return response()->json($response);
+                }
             }
-        } else return response()->json("Wrong email or password！");
+
+        } catch (Exception $e) {
+            return $this->sendError("Wrong password or name", 400);
+        }
+
     }
 
 

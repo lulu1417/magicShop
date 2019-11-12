@@ -50,15 +50,16 @@ class ShopController extends BaseController
             $token = Str::random(10);
             $owner = $owner->getOwner($request['name']);
             if (Hash::check($request['password'], $hashedPassword)) {
-                    if ($owner->update(['api_token' => $token])) { //update api_token
-                        $response = [
-                            'name' => $request->name,
-                            'password' => $request->password,
-                            'api_token' => $token,
-                        ];
-                        return response()->json($response);
-                    }
-                } else return "Wrong email or password！";
+                if ($owner->update(['api_token' => $token])) { //update api_token
+                    $response = [
+                        'name' => $request->name,
+                        'password' => $request->password,
+                        'api_token' => $token,
+                    ];
+                    return response()->json($response);
+                }
+            }
+            return $this->sendError("Wrong password or name", 400);
 
         } catch
         (Exception $e) {
@@ -67,10 +68,15 @@ class ShopController extends BaseController
     }
 
 
-    public
-    function index()
+    public function index()
     {
-        return Magic::all();
+        try {
+            if (Magic::all())
+                return Magic::all();
+        } catch (Exception $e) {
+            return $this->sendError($e->getMessage(), 500);
+        }
+
     }
 
 
@@ -122,9 +128,8 @@ class ShopController extends BaseController
     public
     function update(Request $request, $id)
     {
-
-        $magic = Magic::where('id', $id);
         try {
+            $magic = Magic::find($id);
             if (Auth::user()) {
                 $request->validate([
                     'magic_name' => ['required'],
@@ -150,8 +155,9 @@ class ShopController extends BaseController
     public
     function destroy($id)
     {
-        $magic = Magic::find($id);
+
         try {
+            $magic = Magic::find($id);
             if ($magic->delete()) {
                 return response()->json("Magic item $id delete successfully.");
             }
