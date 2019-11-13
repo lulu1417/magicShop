@@ -76,6 +76,7 @@ return [
             'model' => App\Consumer::class,
         ],
 
+
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',

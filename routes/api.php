@@ -27,6 +27,7 @@ Route::get('shop','ShopController@index');
 //for consumers
 Route::post('consumer/register','ConsumerController@register');
 Route::post('consumer/login','ConsumerController@login');
+Route::post('consumer/logout','ConsumerController@logout');
 
 
 Route::middleware('auth:api')->get('consumer','ConsumerController@index');

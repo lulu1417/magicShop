@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Consumer as Consumer;
 use App\ConsumptionRecord as Record;
 use App\Magic;
-use App\Owner;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,15 +24,19 @@ class ConsumerController extends BaseController
         ) as T on magics.id = T.magic_id; */
 
         try {
+            $consumer = new Consumer;
+            $money = $consumer->getMoney(Auth::user()->id);
             $response = Magic::leftjoin('consumption_records', function ($join) {
                 $join->on('magics.id', '=', 'consumption_records.magic_id')
                     ->where('consumer_id', '=', Auth::user()->id);
             })->select('magics.id', 'magics.magic_name', 'magics.price', 'magics.level',
-                'consumption_records.magic_id', 'consumption_records.consumer_id', 'consumption_records.amount')
+                'consumption_records.magic_id', 'consumption_records.amount')
                 ->get();
+            $response['money']= $money;
+
             return response()->json($response);
         } catch (Exception $e) {
-            return $this->sendError($e->getMessage(), 500);
+            return $this->sendError($e->getMessage(), 400);
         }
     }
 
@@ -74,7 +77,7 @@ class ConsumerController extends BaseController
                 $message = "You've bought the item！";
                 return $this->sendError($error->getMessage(), $message);
             }
-            return $this->sendError($error->getMessage(), 500);
+            return $this->sendError($error->getMessage(), 400);
         }
 
 
@@ -99,7 +102,7 @@ class ConsumerController extends BaseController
                 return response()->json("Register as a consumer.");
             }
         } catch (Exception $error) {
-            return $this->sendError($error->getMessage(), 500);
+            return $this->sendError($error->getMessage(), 400);
         }
 
     }
@@ -113,16 +116,27 @@ class ConsumerController extends BaseController
             $consumer = $consumer->getConsumer($request['name']);
             if (Hash::check($request['password'], $hashedPassword)) {
                     if ($consumer->update(['api_token' => $token])) { //update api_token
-                        $response = [
-                            'name' => $request->name,
-                            'password' => $request->password,
-                            'api_token' => $token,
-                        ];
+                        $response = $consumer;
+                        $response['password'] = $request['password'];
                         return response()->json($response);
                     }
             }
 
         } catch (Exception $e) {
+            return $this->sendError("Wrong password or name", 400);
+        }
+
+    }
+    public function logout(Request $request){
+        try{
+            $consumer = new Consumer;
+            $consumer = $consumer->getConsumer($request['name']);
+            if ($consumer->update(['api_token' => null])) { //update api_token
+                $response = "You've logged out.";
+                return response()->json($response);
+            }
+
+        }catch (Exception $e){
             return $this->sendError("Wrong password or name", 400);
         }
 

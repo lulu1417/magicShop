@@ -6,9 +6,9 @@ class BaseController
     public function sendResponse($result, $message)
     {
         $response = [
-            'success' => true,
+//            'success' => true,
             'data' => $result,
-            'message' => $message,
+//            'message' => $message,
         ];
         return response()->json($response, 200);
     }
@@ -18,7 +18,7 @@ class BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $errorMessages = [], $code = 404)
+    public function sendError($error, $code)
     {
         $response = [
             'success' => false,

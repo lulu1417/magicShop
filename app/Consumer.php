@@ -10,11 +10,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class Consumer extends Authenticatable
 {
     protected $fillable = [
-        'name', 'password', 'api_token', 'money',
+        'name', 'password', 'api_token', 'money', 'password', 'api_token'
     ];
     protected $hidden = [
-        'password', 'api_token'
+        'created_at', 'updated_at'
     ];
+
     function getName($id)
     {
         $name = $this->find($id)->name;
@@ -26,6 +27,7 @@ class Consumer extends Authenticatable
         $password = $this->where('name', $name)->first()->password;
         return $password;
     }
+
     function getConsumer($name)
     {
         $consumer = $this->where('name', $name)->first();
@@ -37,10 +39,16 @@ class Consumer extends Authenticatable
         return $this->hasMany(Record::class);
     }
 
-    function getMoney($id)
+    function getMoney($consumer)
     {
-        $money = $this->find($id)->money;
-        return $money;
+        if(gettype($consumer)==('integer')){
+            $money = $this->find($consumer)->money;
+            return $money;
+        }elseif(gettype($consumer)==('string')){
+            $money = $this->where('name', $consumer)->first()->money;
+            return $money;
+        }
+
     }
 
 }
