@@ -33,7 +33,7 @@ Route::post('consumer/logout','ConsumerController@logout');
 Route::middleware('auth:api')->get('consumer','ConsumerController@index');
 Route::middleware('auth:api')->post('consumer','ConsumerController@buy');
 
-Route::middleware('auth:api')->post('whole','ConsumerController@wholesale');
+Route::middleware('auth:api')->post('wholesale','ConsumerController@wholesale');
 
 
 

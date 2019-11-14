@@ -73,8 +73,12 @@ class ShopController extends BaseController
     public function index()
     {
         try {
-            if (Magic::all())
-                return Magic::all();
+            if (Magic::all()){
+                $result = Magic::all();
+                $result['total number'] = count(Magic::all());
+                return $result;
+            }
+
         } catch (Exception $e) {
             return $this->sendError($e->getMessage(), 500);
         }
@@ -116,7 +120,7 @@ class ShopController extends BaseController
                     'photo' => $parameters['photo'],
                 ]);
                 $result = $create->toArray();
-                if($parameters['photo'] != null)
+                if ($parameters['photo'] != null)
                     $result['imageURL'] = asset('storage/' . $parameters['photo']);
                 if ($create) {
                     return $this->sendResponse($result, 200);
