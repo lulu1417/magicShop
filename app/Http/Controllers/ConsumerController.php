@@ -81,11 +81,44 @@ class ConsumerController extends BaseController
 
     function wholesale(Request $request)
     {
-        $magics = Magic::whereIn('id', $request->magics)
-            ->select('id', 'magic_name', 'price', 'level')->get();
-        if ($request->consumer->money > $magics->sum('price')) {
-            $request->consumer->money -= $magics->sum('price');
+        try{
+            $magics = Magic::whereIn('id', $request->magics)
+                ->select('id', 'magic_name', 'price', 'level')->get();
+
+            $money = Auth::user()->money;
+
+            if ($money > $magics->sum('price')) {
+                $money -= $magics->sum('price');
+                $magics = $magics->toArray();
+                $i = 0;
+                foreach ($magics as $magic){
+                    $create = Record::create([
+                        'consumer_id' => Auth::user()->id,
+                        'magic_id' => $magic['id'],
+                        'amount' => $magic['price'],
+                        'magic_name' => $magic['magic_name'],
+                        'level' => $magic['level'],
+                    ]);
+                    $result[$i] = $create->toArray();
+                    $i++;
+                }
+                Auth::user()->update(['money' => $money]);
+
+                $result['message'] = "Magic bought successfully.";
+                if ($create)
+                    return $this->sendResponse($result, 200);
+            }else {
+                return $this->sendError("Your money is not enough.", 400);
+            }
+
+        }catch (Exception $error){
+            if (strpos($error->getMessage(), '23000') !== false) {
+                $message = "You've bought the item！";
+                return $this->sendError($message, 400);
+            }
+            return $this->sendError("Magic item not found.", 400);
         }
+
     }
 
     function register(Request $request)
