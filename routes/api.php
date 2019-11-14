@@ -18,7 +18,7 @@ use Illuminate\Http\Request;
 Route::post('shop/register','ShopController@register');
 Route::post('shop/login','ShopController@login');
 Route::middleware('auth:owner_api')->post('shop','ShopController@store');
-Route::middleware('auth:owner_api')->put('shop/{id}','ShopController@update');
+Route::middleware('auth:owner_api')->post('shop/{id}','ShopController@update');
 Route::middleware('auth:owner_api')->delete('shop/{id}','ShopController@destroy');
 
 // information of shop

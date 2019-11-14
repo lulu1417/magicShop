@@ -28,7 +28,7 @@ class ConsumerController extends BaseController
             $response = Magic::leftjoin('consumption_records', function ($join) {
                 $join->on('magics.id', '=', 'consumption_records.magic_id')
                     ->where('consumer_id', '=', Auth::user()->id);
-            })->select('magics.id', 'magics.magic_name', 'magics.price', 'magics.level',
+            })->select('magics.id', 'magics.magic_name', 'magics.price', 'magics.level', 'magics.photo',
                 'consumption_records.magic_id', 'consumption_records.amount')
                 ->get();
             $response['money'] = $money;

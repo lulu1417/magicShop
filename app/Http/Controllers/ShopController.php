@@ -143,10 +143,13 @@ class ShopController extends BaseController
                 $request->validate([
                     'level' => ['numeric'],
                     'price' => ['numeric'],
+                    'photo' => ['sometimes', 'mimes:jpg,jpeg,bmp,png'],
                 ]);
+
                 $result = $request->toArray();
+                $result['message'] = 'Magic updated successfully.';
                 if ($magic->update($request->all())) {
-                    return $this->sendResponse($result, 'Magic updated successfully.');
+                    return $this->sendResponse($result, 200);
                 }
             }
         } catch (Exception $e) {
