@@ -39,5 +39,10 @@ class Magic extends Model
         $level = $this->find($id)->level;
         return $level;
     }
+    function getImage($id)
+    {
+        $photo = $this->find($id)->photo;
+        return $photo;
+    }
 
 }

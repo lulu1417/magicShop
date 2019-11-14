@@ -7,6 +7,8 @@ use App\Owner;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManagerStatic as Image;
 use Validator;
 use Str;
 
@@ -86,8 +88,7 @@ class ShopController extends BaseController
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public
-    function store(Request $request)
+    public function store(Request $request)
     {
 
         try {
@@ -98,18 +99,27 @@ class ShopController extends BaseController
                     'price' => ['required', 'numeric', 'max:100000'],
                     'photo' => ['sometimes', 'mimes:jpg,jpeg,bmp,png'],
                 ]);
+                $parameters = request()->all();
 
+
+                if (request()->hasFile('photo')) {
+                    $imageURL = request()->file('photo')->store('public');
+                    $parameters['photo'] = substr($imageURL, 7);
+
+                } else {
+                    $parameters['photo'] = null;
+                }
                 $create = Magic::create([
                     'magic_name' => $request['magic_name'],
                     'level' => $request['level'],
                     'price' => $request['price'],
-                    'photo' => $request['photo'],
+                    'photo' => $parameters['photo'],
                 ]);
-
                 $result = $create->toArray();
-                $message = "Magic create successfully！";
+                if($parameters['photo'] != null)
+                    $result['imageURL'] = asset('storage/' . $parameters['photo']);
                 if ($create) {
-                    return $this->sendResponse($result, $message);
+                    return $this->sendResponse($result, 200);
                 }
             }
         } catch (Exception $e) {
@@ -125,16 +135,14 @@ class ShopController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, $id)
+    public function update(Request $request, $id)
     {
         try {
             $magic = Magic::find($id);
             if (Auth::user()) {
                 $request->validate([
-                    'magic_name' => ['required'],
-                    'level' => ['required', 'numeric'],
-                    'price' => ['required', 'numeric'],
+                    'level' => ['numeric'],
+                    'price' => ['numeric'],
                 ]);
                 $result = $request->toArray();
                 if ($magic->update($request->all())) {
@@ -152,12 +160,14 @@ class ShopController extends BaseController
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public
-    function destroy($id)
+    public function destroy($id)
     {
 
         try {
             $magic = Magic::find($id);
+            $photo = $magic->getImage($id);
+            Storage::disk('public')->delete($photo);
+            $magic->update(['photo' => null]);
             if ($magic->delete()) {
                 return response()->json("Magic item $id delete successfully.");
             }
@@ -165,4 +175,6 @@ class ShopController extends BaseController
             return $this->sendError($e->getMessage(), 500);
         }
     }
+
+
 }
