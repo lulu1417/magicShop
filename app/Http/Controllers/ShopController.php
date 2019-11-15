@@ -73,11 +73,11 @@ class ShopController extends BaseController
     public function index()
     {
         try {
-            if (Magic::all()){
-                $result = Magic::all();
-                $result['total number'] = count(Magic::all());
-                return $result;
+            for($i=1;$i<4;$i++){
+                $result["$i"] = Magic::where('level', $i)->get();
             }
+
+                return $result;
 
         } catch (Exception $e) {
             return $this->sendError($e->getMessage(), 500);
