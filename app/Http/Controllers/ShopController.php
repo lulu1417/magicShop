@@ -94,7 +94,6 @@ class ShopController extends BaseController
      */
     public function store(Request $request)
     {
-
         try {
             if (Auth::user()) {
                 $request->validate([
